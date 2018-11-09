@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteY="81dp">
+
+    <TextView
+        android:id="@+id/firstLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/secondLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/firstLetterTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/thirdLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/secondLetterTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fourthLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/thirdLetterTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fifthLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstLetterTextView" />
+
+    <TextView
+        android:id="@+id/sixthLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/fifthLetterTextView"
+        app:layout_constraintTop_toBottomOf="@+id/secondLetterTextView" />
+
+    <TextView
+        android:id="@+id/seventhLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/sixthLetterTextView"
+        app:layout_constraintTop_toBottomOf="@+id/thirdLetterTextView" />
+
+    <TextView
+        android:id="@+id/eigthLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/seventhLetterTextView"
+        app:layout_constraintTop_toBottomOf="@+id/fourthLetterTextView" />
+
+    <TextView
+        android:id="@+id/ninthLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fifthLetterTextView" />
+
+    <TextView
+        android:id="@+id/tenthLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/ninthLetterTextView"
+        app:layout_constraintTop_toBottomOf="@+id/sixthLetterTextView" />
+
+    <TextView
+        android:id="@+id/eleventhLetterTextView"
+        android:layout_width="53dp"
+        android:layout_height="60dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/tenthLetterTextView"
+        app:layout_constraintTop_toBottomOf="@+id/seventhLetterTextView" />
+
+    <TextView
+        android:id="@+id/twelfthLetterTextView"
+        android:layout_width="53sp"
+        android:layout_height="60dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/eleventhLetterTextView"
+        app:layout_constraintTop_toBottomOf="@+id/eigthLetterTextView" />
+
+    <TextView
+        android:id="@+id/thirteenthLetterTextView"
+        android:layout_width="53sp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ninthLetterTextView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/fourteenthLetterTextView"
+        android:layout_width="53sp"
+        android:layout_height="60dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/thirteenthLetterTextView"
+        app:layout_constraintTop_toBottomOf="@+id/tenthLetterTextView" />
+
+    <TextView
+        android:id="@+id/fifteenthLetterTextView"
+        android:layout_width="53sp"
+        android:layout_height="60dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/fourteenthLetterTextView"
+        app:layout_constraintTop_toBottomOf="@+id/eleventhLetterTextView" />
+
+    <TextView
+        android:id="@+id/sixteenthLetterTextView"
+        android:layout_width="53sp"
+        android:layout_height="60dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="#A8A8A8"
+        android:text="9"
+        android:textSize="42sp"
+        app:layout_constraintStart_toEndOf="@+id/fifteenthLetterTextView"
+        app:layout_constraintTop_toBottomOf="@+id/twelfthLetterTextView" />
+
+    <TextView
+        android:id="@+id/finishedWords"
+        android:layout_width="150dp"
+        android:layout_height="620dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/enterWordsEditText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/getLettersButton"
+        android:layout_width="166dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:drawable/btn_default"
+        android:text="Get Letters"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.138"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fourteenthLetterTextView" />
+
+    <EditText
+        android:id="@+id/enterWordsEditText"
+        android:layout_width="230dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="92dp"
+        android:background="@android:drawable/alert_light_frame"
+        android:ems="10"
+        android:hint=" Enter Words Here"
+        android:imeOptions="actionSend"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/finishedWords"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getLettersButton"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+
+
+    />
+
+    <!--<Button-->
+        <!--android:id="@+id/enterButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="24dp"-->
+        <!--android:layout_marginLeft="24dp"-->
+        <!--android:layout_marginTop="272dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginRight="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:text="Button"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/finishedWords"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.734"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+
+
+</android.support.constraint.ConstraintLayout>
