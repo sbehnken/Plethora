@@ -1,11 +1,14 @@
 package com.example.bogglegame.bogglegame;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -75,19 +78,9 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         mGetLettersButton = (Button) findViewById(R.id.getLettersButton);
         mFinishedWords = (TextView) findViewById(R.id.finishedWords);
-
-//        mEnterButton = (Button) findViewById(R.id.enterButton);
-//
-//        mEnterButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String words = mEnterWordsEditText.getText().toString();
-//                mFinishedWords.setText(words);
-//
-//            }
-//            });
 
         mFirstletterTextView = (TextView) findViewById(R.id.firstLetterTextView);
         mSecondletterTextView = (TextView) findViewById(R.id.secondLetterTextView);
@@ -164,7 +157,6 @@ public class MainActivity extends AppCompatActivity  {
                                         }
                                     }
 
-                                    //todo null out wrong words
                                     //todo make pretty
 
                                     @Override
