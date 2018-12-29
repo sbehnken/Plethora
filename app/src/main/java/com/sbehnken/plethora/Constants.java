@@ -1,4 +1,4 @@
-package com.example.bogglegame.bogglegame;
+package com.sbehnken.plethora;
 
 public class Constants {
     public static final String OXFORD_TOKEN = BuildConfig.OXFORD_TOKEN;

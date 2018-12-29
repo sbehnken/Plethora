@@ -1,10 +1,10 @@
 
-package com.example.bogglegame.bogglegame.model;
+package com.sbehnken.plethora.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CrossReference {
+public class Derivative {
 
     @SerializedName("id")
     @Expose
@@ -12,9 +12,6 @@ public class CrossReference {
     @SerializedName("text")
     @Expose
     private String text;
-    @SerializedName("type")
-    @Expose
-    private String type;
 
     public String getId() {
         return id;
@@ -30,14 +27,6 @@ public class CrossReference {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
 }

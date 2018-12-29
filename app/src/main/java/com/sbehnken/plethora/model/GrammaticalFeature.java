@@ -1,25 +1,17 @@
 
-package com.example.bogglegame.bogglegame.model;
+package com.sbehnken.plethora.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Derivative {
+public class GrammaticalFeature {
 
-    @SerializedName("id")
-    @Expose
-    private String id;
     @SerializedName("text")
     @Expose
     private String text;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    @SerializedName("type")
+    @Expose
+    private String type;
 
     public String getText() {
         return text;
@@ -27,6 +19,14 @@ public class Derivative {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

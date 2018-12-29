@@ -1,21 +1,10 @@
-package com.example.bogglegame.bogglegame;
+package com.sbehnken.plethora;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import javax.net.ssl.HttpsURLConnection;
-
-import android.nfc.Tag;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import com.example.bogglegame.bogglegame.model.DictionaryResponse;
+import com.sbehnken.plethora.model.DictionaryResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

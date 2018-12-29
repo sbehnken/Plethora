@@ -1,4 +1,4 @@
-package com.example.bogglegame.bogglegame;
+package com.sbehnken.plethora;
 
 import org.junit.Test;
 

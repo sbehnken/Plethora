@@ -1,5 +1,5 @@
 
-package com.example.bogglegame.bogglegame.model;
+package com.sbehnken.plethora.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
