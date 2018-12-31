@@ -8,6 +8,16 @@
     tools:context=".MainActivity"
     tools:layout_editor_absoluteY="81dp">
 
+    <ImageView
+        android:id="@+id/background_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/patternwall"/>
+
     <TextView
         android:id="@+id/firstLetterTextView"
         android:layout_width="53dp"
@@ -199,33 +209,70 @@
         app:layout_constraintStart_toEndOf="@+id/fifteenthLetterTextView"
         app:layout_constraintTop_toBottomOf="@+id/twelfthLetterTextView" />
 
-    <TextView
-        android:id="@+id/finishedWords"
-        android:layout_width="147dp"
-        android:layout_height="520dp"
-        android:layout_marginTop="8dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="10dp"
-        android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/enterWordsEditText"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/finished_words_list"
+            android:layout_width="147dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            app:layout_constraintBottom_toTopOf="@id/enterWordsEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/enterWordsEditText"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+        </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/total_points_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:text="Total Points:"
+        app:layout_constraintStart_toEndOf="@id/enterWordsEditText"
+        app:layout_constraintTop_toBottomOf="@id/finished_words_list"
+        app:layout_constraintBottom_toBottomOf="@id/enterWordsEditText"
+
+        />
+
+    <TextView
+        android:id="@+id/total_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/finished_words_list"
+        app:layout_constraintEnd_toEndOf="@id/finished_words_list"
+        app:layout_constraintBottom_toBottomOf="@id/enterWordsEditText"
+        app:layout_constraintStart_toEndOf="@id/total_points_text"
+        android:textSize="17sp"
+        android:textStyle="bold" />
 
     <Button
-        android:id="@+id/getLettersButton"
+        android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:background="@android:drawable/btn_default"
-        android:text="Get Letters"
+        android:text="Start"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/sixteenthLetterTextView"
-        app:layout_constraintStart_toStartOf="@id/thirteenthLetterTextView"
-        app:layout_constraintTop_toBottomOf="@+id/fourteenthLetterTextView" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fourteenthLetterTextView"
+        app:layout_constraintEnd_toStartOf="@id/timer_text"/>
+
+    <TextView
+        android:id="@+id/timer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:text="2:00"
+        app:layout_constraintStart_toEndOf="@id/start_button"
+        app:layout_constraintEnd_toStartOf="@id/finished_words_list"
+        app:layout_constraintTop_toBottomOf="@id/fifteenthLetterTextView"
+        app:layout_constraintBottom_toTopOf="@id/enterWordsEditText" />
 
     <EditText
         android:id="@+id/enterWordsEditText"
@@ -237,8 +284,8 @@
         android:imeOptions="actionSend"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/sixteenthLetterTextView"
-        app:layout_constraintStart_toStartOf="@id/thirteenthLetterTextView"
-        app:layout_constraintTop_toBottomOf="@+id/getLettersButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_button"
         />
 
 

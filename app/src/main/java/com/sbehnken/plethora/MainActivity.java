@@ -1,18 +1,26 @@
 package com.sbehnken.plethora;
 
+import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbehnken.plethora.model.DictionaryResponse;
+import com.sbehnken.plethora.model.UserEntry;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,10 +51,20 @@ public class MainActivity extends AppCompatActivity  {
     private TextView mFifteenthLetterTextView;
     private TextView mSixteenthLetterTextView;
 
-    private Button mGetLettersButton;
+    private ImageView mBackgroundPicture;
+
+    private Button mStartButton;
     private EditText mEnterWordsEditText;
-//    private Button mEnterButton;
-    private TextView mFinishedWords;
+
+    private RecyclerView mFinishedWordsRecyclerView;
+
+    private UserEntryItemAdapter mAdapter;
+
+    private TextView mTimerText;
+    private TextView mTotalPoints;
+
+    private Handler mHandler;
+    private Runnable mRunnable;
 
     private String[][] dice = {
             {"R", "I", "F", "O", "B", "N"},
@@ -74,9 +92,9 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mStartButton = (Button) findViewById(R.id.start_button);
 
-        mGetLettersButton = (Button) findViewById(R.id.getLettersButton);
-        mFinishedWords = (TextView) findViewById(R.id.finishedWords);
+        mFinishedWordsRecyclerView = findViewById(R.id.finished_words_list);
 
         mFirstletterTextView = (TextView) findViewById(R.id.firstLetterTextView);
         mSecondletterTextView = (TextView) findViewById(R.id.secondLetterTextView);
@@ -95,10 +113,24 @@ public class MainActivity extends AppCompatActivity  {
         mFifteenthLetterTextView = (TextView) findViewById(R.id.fifteenthLetterTextView);
         mSixteenthLetterTextView = (TextView) findViewById(R.id.sixteenthLetterTextView);
 
+        mBackgroundPicture = (ImageView) findViewById(R.id.background_photo);
+
         mEnterWordsEditText = (EditText) findViewById(R.id.enterWordsEditText);
 
-        final Toast toast = Toast.makeText(getApplicationContext(), "Word doesn't exist",
-                Toast.LENGTH_SHORT);
+        mTimerText = (TextView) findViewById(R.id.timer_text);
+        mTotalPoints = (TextView) findViewById(R.id.total_points);
+
+        String filename = "patternwall.jpg";
+
+        Uri uri = Uri.fromFile(new File(filename));
+
+        Picasso.with(this).load(uri).into(mBackgroundPicture);
+
+
+        mAdapter = new UserEntryItemAdapter(this);
+        mFinishedWordsRecyclerView.setAdapter(mAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mFinishedWordsRecyclerView.setLayoutManager(layoutManager);
 
         mEnterWordsEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -112,20 +144,23 @@ public class MainActivity extends AppCompatActivity  {
 
                             boolean valid = false;
 
-                            List<String> list = Arrays.asList(displayedTileLetter);
+                            List<String> displayedLettersList = Arrays.asList(displayedTileLetter);
 
                             for (int i = 0; i < word.length(); i++) {
                                 String c = String.valueOf(word.charAt(i));
-                                if (list.contains(c)) {
+                                if (displayedLettersList.contains(c) && word.length() > 2) {
                                     valid = true;
                                 } else {
                                     valid = false;
 
+                                    final Toast toast = Toast.makeText(getApplicationContext(), "Letter not found",
+                                            Toast.LENGTH_SHORT);
+
                                     toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 200);
                                     toast.show();
+                                    mEnterWordsEditText.setText("");
 
                                     break;
-
 
                             }
 
@@ -140,20 +175,32 @@ public class MainActivity extends AppCompatActivity  {
                                         if (response != null) {
 
                                             if (response.body() != null) {
-
-                                                String moveWord = mFinishedWords.getText().toString() + "\n" + word;
-                                                mFinishedWords.setText(moveWord);
+                                                UserEntry userEntry = new UserEntry(word, calculatesPoints(word));
+                                                mAdapter.addWord(userEntry);
                                                 mEnterWordsEditText.setText("");
+
+                                                ArrayList<UserEntry> userEntryList = new ArrayList();
+                                                userEntryList = mAdapter.getUserEntryList();
+
+                                                int total = 0;
+
+                                                for (int i = 0; i < userEntryList.size(); i++) {
+                                                    total = total + userEntryList.get(i).getPoints();
+                                                }
+
+                                                 mTotalPoints.setText(String.valueOf(total));
 
                                             } else {
 
+                                                final Toast toast = Toast.makeText(getApplicationContext(), "Word doesn't exist",
+                                                        Toast.LENGTH_SHORT);
+
                                                 toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 200);
                                                 toast.show();
+                                                mEnterWordsEditText.setText("");
                                             }
                                         }
                                     }
-
-                                    //todo make pretty
 
                                     @Override
                                     public void onFailure(Call<DictionaryResponse> call, Throwable t) {
@@ -178,7 +225,7 @@ public class MainActivity extends AppCompatActivity  {
 
         });
 
-        mGetLettersButton.setOnClickListener(new View.OnClickListener() {
+        mStartButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
 
@@ -186,12 +233,47 @@ public class MainActivity extends AppCompatActivity  {
 
                 randomizeViews();
 
+//                mHandler = new Handler();
+//                mRunnable = new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        long millis = 180000;
+//                        int seconds = (int) (millis / 1000);
+//                        int minutes = seconds / 60;
+//                        seconds = seconds % 60;
+//                        mTimerText.setText(String.valueOf(seconds));
+//                        millis = millis - 1000;
+//
+//                        if (millis == 0) {
+//                            mHandler.removeCallbacks(mRunnable);
+//                        }
+//
+//                    }
+//                };
+//
+//                mHandler.postDelayed(mRunnable, 1000);
+//
                 }
                 });
 
         mFirstletterTextView.getText().toString();
 
 
+            }
+
+            private int calculatesPoints(String word) {
+                if (word.length() == 3 || word.length() == 4) {
+                    return 1;
+                } else if (word.length() == 5) {
+                    return 2;
+                } else if (word.length() == 6) {
+                    return 3;
+                } else if (word.length() == 7) {
+                    return 5;
+                } else if (word.length() >= 8) {
+                    return 11;
+                }
+                return 0;
             }
 
             private void randomizeViews() {
