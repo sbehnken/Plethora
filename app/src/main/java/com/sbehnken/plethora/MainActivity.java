@@ -1,7 +1,6 @@
 package com.sbehnken.plethora;
 
-import android.net.Uri;
-import android.os.Handler;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,7 +19,6 @@ import com.sbehnken.plethora.model.DictionaryResponse;
 import com.sbehnken.plethora.model.UserEntry;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     private TextView mFirstletterTextView;
     private TextView mSecondletterTextView;
@@ -51,20 +49,12 @@ public class MainActivity extends AppCompatActivity  {
     private TextView mFifteenthLetterTextView;
     private TextView mSixteenthLetterTextView;
 
-    private ImageView mBackgroundPicture;
-
-    private Button mStartButton;
     private EditText mEnterWordsEditText;
-
-    private RecyclerView mFinishedWordsRecyclerView;
 
     private UserEntryItemAdapter mAdapter;
 
     private TextView mTimerText;
     private TextView mTotalPoints;
-
-    private Handler mHandler;
-    private Runnable mRunnable;
 
     private String[][] dice = {
             {"R", "I", "F", "O", "B", "N"},
@@ -92,40 +82,35 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mStartButton = (Button) findViewById(R.id.start_button);
+        Button mStartButton = findViewById(R.id.start_button);
 
-        mFinishedWordsRecyclerView = findViewById(R.id.finished_words_list);
+        RecyclerView mFinishedWordsRecyclerView = findViewById(R.id.finished_words_list);
 
-        mFirstletterTextView = (TextView) findViewById(R.id.firstLetterTextView);
-        mSecondletterTextView = (TextView) findViewById(R.id.secondLetterTextView);
-        mThirdletterTextView = (TextView) findViewById(R.id.thirdLetterTextView);
-        mFourthletterTextView = (TextView) findViewById(R.id.fourthLetterTextView);
-        mFifthletterTextView = (TextView) findViewById(R.id.fifthLetterTextView);
-        mSixthletterTextView = (TextView) findViewById(R.id.sixthLetterTextView);
-        mSeventhletterTextView = (TextView) findViewById(R.id.seventhLetterTextView);
-        mEightletterTextView = (TextView) findViewById(R.id.eigthLetterTextView);
-        mNinthLetterTextView = (TextView) findViewById(R.id.ninthLetterTextView);
-        mTenthLetterTextView = (TextView) findViewById(R.id.tenthLetterTextView);
-        mEleventhLetterTextView = (TextView) findViewById(R.id.eleventhLetterTextView);
-        mTwelfthLetterTextView = (TextView) findViewById(R.id.twelfthLetterTextView);
-        mThirteenthLetterTextView = (TextView) findViewById(R.id.thirteenthLetterTextView);
-        mFourteenthLetterTextView = (TextView) findViewById(R.id.fourteenthLetterTextView);
-        mFifteenthLetterTextView = (TextView) findViewById(R.id.fifteenthLetterTextView);
-        mSixteenthLetterTextView = (TextView) findViewById(R.id.sixteenthLetterTextView);
+        mFirstletterTextView = findViewById(R.id.firstLetterTextView);
+        mSecondletterTextView = findViewById(R.id.secondLetterTextView);
+        mThirdletterTextView = findViewById(R.id.thirdLetterTextView);
+        mFourthletterTextView = findViewById(R.id.fourthLetterTextView);
+        mFifthletterTextView = findViewById(R.id.fifthLetterTextView);
+        mSixthletterTextView = findViewById(R.id.sixthLetterTextView);
+        mSeventhletterTextView = findViewById(R.id.seventhLetterTextView);
+        mEightletterTextView = findViewById(R.id.eigthLetterTextView);
+        mNinthLetterTextView = findViewById(R.id.ninthLetterTextView);
+        mTenthLetterTextView = findViewById(R.id.tenthLetterTextView);
+        mEleventhLetterTextView = findViewById(R.id.eleventhLetterTextView);
+        mTwelfthLetterTextView = findViewById(R.id.twelfthLetterTextView);
+        mThirteenthLetterTextView = findViewById(R.id.thirteenthLetterTextView);
+        mFourteenthLetterTextView = findViewById(R.id.fourteenthLetterTextView);
+        mFifteenthLetterTextView = findViewById(R.id.fifteenthLetterTextView);
+        mSixteenthLetterTextView = findViewById(R.id.sixteenthLetterTextView);
 
-        mBackgroundPicture = (ImageView) findViewById(R.id.background_photo);
+        ImageView mBackgroundPicture = findViewById(R.id.background_photo);
 
-        mEnterWordsEditText = (EditText) findViewById(R.id.enterWordsEditText);
+        mEnterWordsEditText = findViewById(R.id.enterWordsEditText);
 
-        mTimerText = (TextView) findViewById(R.id.timer_text);
-        mTotalPoints = (TextView) findViewById(R.id.total_points);
+        mTimerText = findViewById(R.id.timer_text);
+        mTotalPoints = findViewById(R.id.total_points);
 
-        String filename = "patternwall.jpg";
-
-        Uri uri = Uri.fromFile(new File(filename));
-
-        Picasso.with(this).load(uri).into(mBackgroundPicture);
-
+        Picasso.with(this).load(R.drawable.patternwall).error(getResources().getDrawable(R.drawable.ic_launcher_background)).fit().into(mBackgroundPicture);
 
         mAdapter = new UserEntryItemAdapter(this);
         mFinishedWordsRecyclerView.setAdapter(mAdapter);
@@ -153,7 +138,7 @@ public class MainActivity extends AppCompatActivity  {
                                 } else {
                                     valid = false;
 
-                                    final Toast toast = Toast.makeText(getApplicationContext(), "Letter not found",
+                                    final Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_msg_error_wrong_letter),
                                             Toast.LENGTH_SHORT);
 
                                     toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 200);
@@ -162,7 +147,7 @@ public class MainActivity extends AppCompatActivity  {
 
                                     break;
 
-                            }
+                                }
 
                             }
 
@@ -172,27 +157,48 @@ public class MainActivity extends AppCompatActivity  {
                                 dictionaryService.getResponse(word).enqueue(new Callback<DictionaryResponse>() {
                                     @Override
                                     public void onResponse(Call<DictionaryResponse> call, Response<DictionaryResponse> response) {
-                                        if (response != null) {
 
                                             if (response.body() != null) {
-                                                UserEntry userEntry = new UserEntry(word, calculatesPoints(word));
-                                                mAdapter.addWord(userEntry);
-                                                mEnterWordsEditText.setText("");
 
-                                                ArrayList<UserEntry> userEntryList = new ArrayList();
-                                                userEntryList = mAdapter.getUserEntryList();
+                                                ArrayList<UserEntry> userEntryList = mAdapter.getUserEntryList();
 
                                                 int total = 0;
+                                                boolean isDouble = false;
 
                                                 for (int i = 0; i < userEntryList.size(); i++) {
+                                                    isDouble = userEntryList.get(i).getWord().equals(word);
+
                                                     total = total + userEntryList.get(i).getPoints();
                                                 }
 
-                                                 mTotalPoints.setText(String.valueOf(total));
+                                                if (isDouble) {
+
+                                                    final Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_msg_error_duplicate),
+                                                            Toast.LENGTH_SHORT);
+
+                                                    toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 200);
+                                                    toast.show();
+
+                                                } else {
+
+                                                    UserEntry userEntry = new UserEntry(word, calculatesPoints(word));
+
+                                                    if (userEntryList.size() < 1) {
+                                                        mTotalPoints.setText(String.valueOf(userEntry.getPoints()));
+
+                                                    } else {
+
+                                                        mTotalPoints.setText(String.valueOf(total + userEntry.getPoints()));
+                                                    }
+
+                                                    mAdapter.addWord(userEntry);
+                                                }
+
+                                                mEnterWordsEditText.setText("");
 
                                             } else {
 
-                                                final Toast toast = Toast.makeText(getApplicationContext(), "Word doesn't exist",
+                                                final Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_msg_error_not_exist),
                                                         Toast.LENGTH_SHORT);
 
                                                 toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 200);
@@ -200,13 +206,12 @@ public class MainActivity extends AppCompatActivity  {
                                                 mEnterWordsEditText.setText("");
                                             }
                                         }
-                                    }
 
                                     @Override
                                     public void onFailure(Call<DictionaryResponse> call, Throwable t) {
                                         Log.d("MainActivity", t.getLocalizedMessage());
 
-                                        Toast.makeText(MainActivity.this, "Network Error. Please try again.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, getResources().getString(R.string.toast_msg_error_network), Toast.LENGTH_SHORT).show();
 
                                     }
 
@@ -228,107 +233,95 @@ public class MainActivity extends AppCompatActivity  {
         mStartButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
-
             public void onClick(View view) {
 
                 randomizeViews();
 
-//                mHandler = new Handler();
-//                mRunnable = new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        long millis = 180000;
-//                        int seconds = (int) (millis / 1000);
-//                        int minutes = seconds / 60;
-//                        seconds = seconds % 60;
-//                        mTimerText.setText(String.valueOf(seconds));
-//                        millis = millis - 1000;
-//
-//                        if (millis == 0) {
-//                            mHandler.removeCallbacks(mRunnable);
-//                        }
-//
-//                    }
-//                };
-//
-//                mHandler.postDelayed(mRunnable, 1000);
-//
-                }
-                });
+                new CountDownTimer(180000, 1000) {
 
-        mFirstletterTextView.getText().toString();
+                    public void onTick(long millisUntilFinished) {
+                        int minute = (int) (millisUntilFinished / 1000) / 60;
+                        int second = (int) (millisUntilFinished / 1000) % 60;
+                        mTimerText.setText(String.format("%02d", minute) + ":" + String.format("%02d", second));
+                    }
 
+                    public void onFinish() {
+                        mTimerText.setText(getString(R.string.timer_complete_msg));
+                    }
+
+                }.start();
 
             }
+        });
 
-            private int calculatesPoints(String word) {
-                if (word.length() == 3 || word.length() == 4) {
-                    return 1;
-                } else if (word.length() == 5) {
-                    return 2;
-                } else if (word.length() == 6) {
-                    return 3;
-                } else if (word.length() == 7) {
-                    return 5;
-                } else if (word.length() >= 8) {
-                    return 11;
-                }
-                return 0;
-            }
+        mFirstletterTextView.getText();
 
-            private void randomizeViews() {
+    }
 
-                List<Integer> numbers = new ArrayList<Integer>();
-                numbers.add(0);
-                numbers.add(1);
-                numbers.add(2);
-                numbers.add(3);
-                numbers.add(4);
-                numbers.add(5);
-                numbers.add(6);
-                numbers.add(7);
-                numbers.add(8);
-                numbers.add(9);
-                numbers.add(10);
-                numbers.add(11);
-                numbers.add(12);
-                numbers.add(13);
-                numbers.add(14);
-                numbers.add(15);
+    private int calculatesPoints(String word) {
+        if (word.length() == 3 || word.length() == 4) {
+            return 1;
+        } else if (word.length() == 5) {
+            return 2;
+        } else if (word.length() == 6) {
+            return 3;
+        } else if (word.length() == 7) {
+            return 5;
+        } else if (word.length() >= 8) {
+            return 11;
+        }
+        return 0;
+    }
 
-                Collections.shuffle(numbers);
+    private void randomizeViews() {
 
-                List<TextView> viewList = new ArrayList<>();
-                viewList.add(mFirstletterTextView);
-                viewList.add(mSecondletterTextView);
-                viewList.add(mThirdletterTextView);
-                viewList.add(mFourthletterTextView);
-                viewList.add(mFifthletterTextView);
-                viewList.add(mSixthletterTextView);
-                viewList.add(mSeventhletterTextView);
-                viewList.add(mEightletterTextView);
-                viewList.add(mNinthLetterTextView);
-                viewList.add(mTenthLetterTextView);
-                viewList.add(mEleventhLetterTextView);
-                viewList.add(mTwelfthLetterTextView);
-                viewList.add(mThirteenthLetterTextView);
-                viewList.add(mFourteenthLetterTextView);
-                viewList.add(mFifteenthLetterTextView);
-                viewList.add(mSixteenthLetterTextView);
+        List<Integer> numbers = new ArrayList<>();
+        numbers.add(0);
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+        numbers.add(4);
+        numbers.add(5);
+        numbers.add(6);
+        numbers.add(7);
+        numbers.add(8);
+        numbers.add(9);
+        numbers.add(10);
+        numbers.add(11);
+        numbers.add(12);
+        numbers.add(13);
+        numbers.add(14);
+        numbers.add(15);
 
-                Collections.shuffle(viewList);
+        Collections.shuffle(numbers);
 
-                for(int i = 0; i < 16; i++) {
-                    displayedTileLetter[numbers.get(i)] = dice[numbers.get(i)][new Random().nextInt(6)];
-                    viewList.get(numbers.get(i)).setText(displayedTileLetter[numbers.get(i)]);
+        List<TextView> viewList = new ArrayList<>();
+        viewList.add(mFirstletterTextView);
+        viewList.add(mSecondletterTextView);
+        viewList.add(mThirdletterTextView);
+        viewList.add(mFourthletterTextView);
+        viewList.add(mFifthletterTextView);
+        viewList.add(mSixthletterTextView);
+        viewList.add(mSeventhletterTextView);
+        viewList.add(mEightletterTextView);
+        viewList.add(mNinthLetterTextView);
+        viewList.add(mTenthLetterTextView);
+        viewList.add(mEleventhLetterTextView);
+        viewList.add(mTwelfthLetterTextView);
+        viewList.add(mThirteenthLetterTextView);
+        viewList.add(mFourteenthLetterTextView);
+        viewList.add(mFifteenthLetterTextView);
+        viewList.add(mSixteenthLetterTextView);
 
-                }
+        Collections.shuffle(viewList);
 
-
-            }
-
+        for (int i = 0; i < 16; i++) {
+            displayedTileLetter[numbers.get(i)] = dice[numbers.get(i)][new Random().nextInt(6)];
+            viewList.get(numbers.get(i)).setText(displayedTileLetter[numbers.get(i)]);
 
         }
+    }
+}
 
 
 

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Plethora</string>
+    <string name="toast_msg_error_duplicate">Word already entered</string>
+    <string name="toast_msg_error_not_exist">Word doesn\'t exist</string>
+    <string name="toast_msg_error_network">Network Error. Please try again.</string>
+    <string name="toast_msg_error_wrong_letter">Letter not found</string>
+    <string name="timer_complete_msg">Time is up</string>
 </resources>
