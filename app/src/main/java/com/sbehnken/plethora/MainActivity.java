@@ -1,5 +1,6 @@
 package com.sbehnken.plethora;
 
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,13 +49,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView mFourteenthLetterTextView;
     private TextView mFifteenthLetterTextView;
     private TextView mSixteenthLetterTextView;
-
+    private TextView mTimerText;
+    private TextView mTotalPoints;
     private EditText mEnterWordsEditText;
 
     private UserEntryItemAdapter mAdapter;
-
-    private TextView mTimerText;
-    private TextView mTotalPoints;
 
     private String[][] dice = {
             {"R", "I", "F", "O", "B", "N"},
@@ -110,7 +109,11 @@ public class MainActivity extends AppCompatActivity {
         mTimerText = findViewById(R.id.timer_text);
         mTotalPoints = findViewById(R.id.total_points);
 
-        Picasso.with(this).load(R.drawable.patternwall).error(getResources().getDrawable(R.drawable.ic_launcher_background)).fit().into(mBackgroundPicture);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setBackgroundDrawable(getDrawable(R.drawable.patternwall));
+        } else {
+            Picasso.with(this).load(R.drawable.patternwall).error(getResources().getDrawable(R.drawable.ic_launcher_background)).fit().into(mBackgroundPicture);
+        }
 
         mAdapter = new UserEntryItemAdapter(this);
         mFinishedWordsRecyclerView.setAdapter(mAdapter);
