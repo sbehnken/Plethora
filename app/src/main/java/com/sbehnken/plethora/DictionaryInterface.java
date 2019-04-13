@@ -11,7 +11,6 @@ public interface DictionaryInterface {
 
     @GET("entries/en/{word}")
 
-//    Call<DictionaryResponse> getResponse(@Path("id") String id, @Query("key") String key);
-
     Call<DictionaryResponse> getResponse(@Header("app_id") String app_id, @Header("app_key") String app_key, @Path("word") String word);
+
 }

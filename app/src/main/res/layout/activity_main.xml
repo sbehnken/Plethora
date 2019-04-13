@@ -17,6 +17,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/dice_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
 
     <TextView
         android:id="@+id/firstLetterTextView"
@@ -25,6 +30,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -37,6 +43,7 @@
         android:layout_width="53dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -49,6 +56,7 @@
         android:layout_width="53dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -61,6 +69,7 @@
         android:layout_width="53dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -74,6 +83,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -85,6 +95,7 @@
         android:id="@+id/sixthLetterTextView"
         android:layout_width="53dp"
         android:layout_height="60dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -96,6 +107,7 @@
         android:id="@+id/seventhLetterTextView"
         android:layout_width="53dp"
         android:layout_height="60dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -107,6 +119,7 @@
         android:id="@+id/eigthLetterTextView"
         android:layout_width="53dp"
         android:layout_height="60dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -120,6 +133,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -131,6 +145,7 @@
         android:id="@+id/tenthLetterTextView"
         android:layout_width="53dp"
         android:layout_height="60dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -142,6 +157,7 @@
         android:id="@+id/eleventhLetterTextView"
         android:layout_width="53dp"
         android:layout_height="60dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -153,6 +169,7 @@
         android:id="@+id/twelfthLetterTextView"
         android:layout_width="53sp"
         android:layout_height="60dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -167,6 +184,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="8dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -180,6 +198,7 @@
         android:id="@+id/fourteenthLetterTextView"
         android:layout_width="53sp"
         android:layout_height="60dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -191,6 +210,7 @@
         android:id="@+id/fifteenthLetterTextView"
         android:layout_width="53sp"
         android:layout_height="60dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
@@ -202,12 +222,15 @@
         android:id="@+id/sixteenthLetterTextView"
         android:layout_width="53sp"
         android:layout_height="60dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/buttonshape"
         android:gravity="center"
         android:shadowColor="#A8A8A8"
         android:textSize="42sp"
         app:layout_constraintStart_toEndOf="@+id/fifteenthLetterTextView"
         app:layout_constraintTop_toBottomOf="@+id/twelfthLetterTextView" />
+
+    </android.support.constraint.ConstraintLayout>
 
 
         <android.support.v7.widget.RecyclerView
@@ -233,7 +256,7 @@
         android:layout_height="wrap_content"
         android:textSize="19sp"
         android:textStyle="bold"
-        android:text="Total Points:"
+        android:text="Total Points:_________"
         app:layout_constraintStart_toEndOf="@id/enterWordsEditText"
         app:layout_constraintTop_toBottomOf="@id/finished_words_list"
         app:layout_constraintBottom_toBottomOf="@id/enterWordsEditText"
@@ -248,21 +271,22 @@
         app:layout_constraintEnd_toEndOf="@id/finished_words_list"
         app:layout_constraintBottom_toBottomOf="@id/enterWordsEditText"
         app:layout_constraintStart_toEndOf="@id/total_points_text"
+        android:layout_marginRight="70dp"
+        android:paddingBottom="3dp"
         android:textSize="17sp"
         android:textStyle="bold" />
 
     <Button
         android:id="@+id/start_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_width="80dp"
+        android:layout_height="44dp"
+        android:layout_marginLeft="15dp"
         android:background="@android:drawable/btn_default"
         android:text="Start"
         android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@id/timer_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fourteenthLetterTextView"
-        app:layout_constraintEnd_toStartOf="@id/timer_text"/>
+        app:layout_constraintTop_toBottomOf="@+id/dice_layout" />
 
     <TextView
         android:id="@+id/timer_text"
@@ -270,11 +294,21 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:text="2:00"
+        app:layout_constraintBottom_toTopOf="@id/enterWordsEditText"
         app:layout_constraintStart_toEndOf="@id/start_button"
-        app:layout_constraintEnd_toStartOf="@id/finished_words_list"
-        app:layout_constraintTop_toBottomOf="@id/fifteenthLetterTextView"
-        app:layout_constraintBottom_toTopOf="@id/enterWordsEditText" />
+        app:layout_constraintTop_toBottomOf="@id/dice_layout"
+        tools:text="2:00" />
+
+    <Button
+        android:id="@+id/enter_button"
+        android:layout_width="80dp"
+        android:layout_height="44dp"
+        android:background="@android:drawable/btn_default"
+        android:text="Enter"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/enterWordsEditText"
+        app:layout_constraintStart_toEndOf="@id/timer_text"
+        app:layout_constraintTop_toBottomOf="@id/dice_layout" />
 
     <EditText
         android:id="@+id/enterWordsEditText"
@@ -285,11 +319,9 @@
         android:hint=" Enter Words Here"
         android:imeOptions="actionSend"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/sixteenthLetterTextView"
+        app:layout_constraintEnd_toEndOf="@+id/dice_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_button"
         />
-
-
 
 </android.support.constraint.ConstraintLayout>

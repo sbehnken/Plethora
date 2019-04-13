@@ -12,6 +12,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textSize="17dp"
+        android:textStyle="bold"
         tools:text="word"
         />
 
@@ -22,6 +24,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        android:textSize="17dp"
         tools:text="points"
         />
 
