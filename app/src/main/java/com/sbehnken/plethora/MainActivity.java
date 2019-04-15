@@ -1,8 +1,10 @@
 package com.sbehnken.plethora;
 
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +36,13 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private enum ViewConfiguration {
+        INITIALIZED,
+        PLAYING,
+        PAUSED,
+        COMPLETED
+    }
+
     private TextView mFirstletterTextView;
     private TextView mSecondletterTextView;
     private TextView mThirdletterTextView;
@@ -56,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mEnterButton;
 
     private UserEntryItemAdapter mAdapter;
+
+    private ViewConfiguration viewConfiguration = ViewConfiguration.INITIALIZED;
 
     private String[][] dice = {
             {"R", "I", "F", "O", "B", "N"},
@@ -114,6 +125,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTimerText = findViewById(R.id.timer_text);
         mTotalPoints = findViewById(R.id.total_points);
 
+        final View layout = findViewById(R.id.dice_layout);
+
+        final AlertDialog alertDialog  = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(R.string.timer_complete_msg);
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        layout.setVisibility(View.INVISIBLE);
+                        viewConfiguration = viewConfiguration.INITIALIZED;
+                        dialog.dismiss();
+                    }
+                });
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setBackgroundDrawable(getDrawable(R.drawable.twillbeige));
         } else {
@@ -150,56 +173,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mStartButton.setOnClickListener(new View.OnClickListener() {
             private static final long START_TIME_IN_MILLIS = 180000;
             private CountDownTimer mCountDownTimer;
-            private boolean mTimerRunning;
             private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
 
             @Override
             public void onClick(View view) {
-//todo create an enum with three states: start, pause and resume and toggle accordingly
+                switch(viewConfiguration) {
+                    case INITIALIZED:
+                        if (mTimeLeftInMillis == 180000 || mTimerText.getText().equals("00:00")) {
+                            randomizeViews();
+                            viewConfiguration = viewConfiguration.PLAYING;
+                        }
 
-                if (mTimerRunning) {
-                    pauseTimer();
-                } else {
-                    startTimer();
-                    randomizeViews();
+                    case PLAYING:
+                        startTimer();
+                            viewConfiguration = viewConfiguration.PAUSED;
+                            break;
+
+                    case PAUSED:
+                        pauseTimer();
+                        mStartButton.setText("Start");
+                        viewConfiguration = viewConfiguration.PLAYING;
+                        break;
+
+                    case COMPLETED:
+                        mStartButton.setText("lkjsdf");
+                        resetTimer();
+                        viewConfiguration = viewConfiguration.INITIALIZED;
+                        break;
                 }
-
-                updateCountDownText();
-
-                //todo keep randomize from happening until everything is reset
-//                if(mStartButton != null) {
-//                    !randomizeViews();
-//                }
             }
 
             private void startTimer() {
-                View layout = findViewById(R.id.dice_layout);
                 layout.setVisibility(View.VISIBLE);
 
                 mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-
+                    @Override
                     public void onTick(long millisUntilFinished) {
                         mTimeLeftInMillis = millisUntilFinished;
                         updateCountDownText();
                     }
-
+                    @Override
                     public void onFinish() {
-                        mTimerText.setText(getString(R.string.timer_complete_msg));
-
+                        if(mStartButton.getText().equals("Pause") && mTimerText.getText().equals("00:00")) {
+                            alertDialog.show();
+                            resetTimer();
+                            mStartButton.setText("Start");
+                        }
                     }
-
                 }.start();
 
-                mTimerRunning = true;
                 mStartButton.setText("Pause");
             }
 
             private void pauseTimer() {
                 mCountDownTimer.cancel();
-                mTimerRunning = false;
                 mStartButton.setText("Start");
                 View layout = findViewById(R.id.dice_layout);
                 layout.setVisibility(View.INVISIBLE);
+            }
+
+            private void resetTimer() {
+                mTimeLeftInMillis = START_TIME_IN_MILLIS;
+                updateCountDownText();
             }
 
             private void updateCountDownText() {
@@ -234,7 +269,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 result += mFirstletterTextView.getText().toString();
                 mEnterWordsEditText.setText(result);
                 mAdapter.notifyDataSetChanged();
-
                 break;
             case R.id.secondLetterTextView:
                 result += mSecondletterTextView.getText().toString();
@@ -362,7 +396,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < 16; i++) {
             displayedTileLetter[numbers.get(i)] = dice[numbers.get(i)][new Random().nextInt(6)];
             viewList.get(numbers.get(i)).setText(displayedTileLetter[numbers.get(i)]);
-
         }
     }
 
