@@ -2,6 +2,8 @@
 ## Overview 
 Built in the style of Boggle. Four by four grid of lettered dice where players attempt to find words within a three minute time frame. 
 
+Games to be added like checkers, tic tac toe, etc. Hence the name Plethora.
+
 # Playstore
 [Plethora](https://play.google.com/store/apps/details?id=com.sbehnken.plethora)
 
