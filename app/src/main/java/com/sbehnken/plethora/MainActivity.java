@@ -125,9 +125,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final View layout = findViewById(R.id.dice_layout);
 
-        final AlertDialog alertDialog  = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle(R.string.timer_complete_msg);
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+        final AlertDialog.Builder alertDialog  = new AlertDialog.Builder(this)
+                .setTitle(R.string.timer_complete_msg)
+                .setPositiveButton(getString(R.string.okay_message), new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                         layout.setVisibility(View.INVISIBLE);
                         mEnterWordsEditText.setVisibility(View.INVISIBLE);
@@ -170,7 +171,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
-            private static final long START_TIME_IN_MILLIS = 5000;
+            //todo change to 3 mins
+            private static final long START_TIME_IN_MILLIS = 180000;
             private CountDownTimer mCountDownTimer;
             private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
 
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 switch(viewConfiguration) {
                     case INITIALIZED:
-                        if (mTimeLeftInMillis == 5000 || mTimerText.getText().equals("00:00")) {
+                        if (mTimeLeftInMillis == 180000 || mTimerText.getText().equals("00:00")) {
                             randomizeViews();
                             mAdapter.getUserEntryList().clear();
                             mTotalPoints.setText("");
@@ -193,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     case PAUSED:
                         pauseTimer();
-                        mStartButton.setText("Start");
+                        mStartButton.setText(R.string.start_button_message);
                         viewConfiguration = viewConfiguration.PLAYING;
                         break;
                 }
@@ -210,20 +212,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     @Override
                     public void onFinish() {
-                        if(mStartButton.getText().equals("Pause") && mTimerText.getText().equals("00:00")) {
+                        if(viewConfiguration.equals(ViewConfiguration.PAUSED) && mTimerText.getText().equals("00:00")) {
                             alertDialog.show();
                             resetTimer();
-                            mStartButton.setText("Start");
+                            mStartButton.setText(R.string.start_button_message);
                         }
                     }
                 }.start();
 
-                mStartButton.setText("Pause");
+                mStartButton.setText(R.string.pause_button_message);
             }
 
             private void pauseTimer() {
                 mCountDownTimer.cancel();
-                mStartButton.setText("Start");
+                mStartButton.setText(R.string.start_button_message);
                 View layout = findViewById(R.id.dice_layout);
                 layout.setVisibility(View.INVISIBLE);
             }
