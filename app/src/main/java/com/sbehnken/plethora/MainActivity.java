@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         INITIALIZED,
         PLAYING,
         PAUSED,
-        COMPLETED
     }
 
     private TextView mFirstletterTextView;
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mTimerText;
     private TextView mTotalPoints;
     private EditText mEnterWordsEditText;
-    private Button mEnterButton;
 
     private UserEntryItemAdapter mAdapter;
 
@@ -97,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         final Button mStartButton = findViewById(R.id.start_button);
-        mEnterButton = findViewById(R.id.enter_button);
+        Button mEnterButton = findViewById(R.id.enter_button);
 
         RecyclerView mFinishedWordsRecyclerView = findViewById(R.id.finished_words_list);
 
@@ -132,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         layout.setVisibility(View.INVISIBLE);
+                        mEnterWordsEditText.setVisibility(View.INVISIBLE);
                         viewConfiguration = viewConfiguration.INITIALIZED;
                         dialog.dismiss();
                     }
@@ -171,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
-            private static final long START_TIME_IN_MILLIS = 180000;
+            private static final long START_TIME_IN_MILLIS = 5000;
             private CountDownTimer mCountDownTimer;
             private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
 
@@ -179,8 +178,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 switch(viewConfiguration) {
                     case INITIALIZED:
-                        if (mTimeLeftInMillis == 180000 || mTimerText.getText().equals("00:00")) {
+                        if (mTimeLeftInMillis == 5000 || mTimerText.getText().equals("00:00")) {
                             randomizeViews();
+                            mAdapter.getUserEntryList().clear();
+                            mTotalPoints.setText("");
+                            mEnterWordsEditText.setVisibility(View.VISIBLE);
                             viewConfiguration = viewConfiguration.PLAYING;
                         }
 
@@ -193,12 +195,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         pauseTimer();
                         mStartButton.setText("Start");
                         viewConfiguration = viewConfiguration.PLAYING;
-                        break;
-
-                    case COMPLETED:
-                        mStartButton.setText("lkjsdf");
-                        resetTimer();
-                        viewConfiguration = viewConfiguration.INITIALIZED;
                         break;
                 }
             }
