@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(DialogInterface dialog, int which) {
                         layout.setVisibility(View.INVISIBLE);
                         mEnterWordsEditText.setVisibility(View.INVISIBLE);
-                        viewConfiguration = viewConfiguration.INITIALIZED;
+                        viewConfiguration = ViewConfiguration.INITIALIZED;
                         dialog.dismiss();
                     }
                 });
@@ -185,18 +185,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             mAdapter.getUserEntryList().clear();
                             mTotalPoints.setText("");
                             mEnterWordsEditText.setVisibility(View.VISIBLE);
-                            viewConfiguration = viewConfiguration.PLAYING;
+                            viewConfiguration = ViewConfiguration.PLAYING;
                         }
 
                     case PLAYING:
                         startTimer();
-                            viewConfiguration = viewConfiguration.PAUSED;
+                            viewConfiguration = ViewConfiguration.PAUSED;
                             break;
 
                     case PAUSED:
                         pauseTimer();
                         mStartButton.setText(R.string.start_button_message);
-                        viewConfiguration = viewConfiguration.PLAYING;
+                        viewConfiguration = ViewConfiguration.PLAYING;
                         break;
                 }
             }
