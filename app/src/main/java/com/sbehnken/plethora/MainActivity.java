@@ -1,6 +1,7 @@
 package com.sbehnken.plethora;
 
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     String result = "";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTotalPoints = findViewById(R.id.total_points);
 
         final View layout = findViewById(R.id.dice_layout);
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.postmanring);
 
         final AlertDialog.Builder alertDialog  = new AlertDialog.Builder(this)
                 .setTitle(R.string.timer_complete_msg)
@@ -171,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
-            //todo change to 3 mins
             private static final long START_TIME_IN_MILLIS = 180000;
             private CountDownTimer mCountDownTimer;
             private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
@@ -202,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             private void startTimer() {
+
                 layout.setVisibility(View.VISIBLE);
 
                 mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
@@ -216,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             alertDialog.show();
                             resetTimer();
                             mStartButton.setText(R.string.start_button_message);
+                            mp.start();
                         }
                     }
                 }.start();
