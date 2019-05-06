@@ -1,10 +1,13 @@
 package com.sbehnken.plethora;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -90,6 +95,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     String result = "";
 
+    private final static String SHARED_PREFS = "shared_prefs";
+
+    private int soundState = 0;
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
+
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,11 +138,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTotalPoints = findViewById(R.id.total_points);
 
         final View layout = findViewById(R.id.dice_layout);
-        final MediaPlayer mp = MediaPlayer.create(this, R.raw.postmanring);
 
-        final AlertDialog.Builder alertDialog  = new AlertDialog.Builder(this)
+        mediaPlayer = MediaPlayer.create(this, R.raw.endring);
+
+        mSharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
+        mEditor.putInt(SHARED_PREFS, soundState);
+        mEditor.apply();
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            getSupportActionBar().setTitle("Plethora");
+        }
+
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.timer_complete_msg)
-                .setPositiveButton(getString(R.string.okay_message), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.quit_message), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        layout.setVisibility(View.INVISIBLE);
+                        mEnterWordsEditText.setVisibility(View.INVISIBLE);
+                        viewConfiguration = ViewConfiguration.INITIALIZED;
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .setPositiveButton(getString(R.string.play_again_message), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         layout.setVisibility(View.INVISIBLE);
@@ -174,26 +207,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
-            private static final long START_TIME_IN_MILLIS = 180000;
+            //todo fix time
+            private static final long START_TIME_IN_MILLIS = 4000;
             private CountDownTimer mCountDownTimer;
             private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
 
             @Override
             public void onClick(View view) {
-                switch(viewConfiguration) {
+                switch (viewConfiguration) {
                     case INITIALIZED:
-                        if (mTimeLeftInMillis == 180000 || mTimerText.getText().equals("00:00")) {
+                        if (mTimeLeftInMillis == 4000 || mTimerText.getText().equals("00:00")) {
                             randomizeViews();
                             mAdapter.getUserEntryList().clear();
                             mTotalPoints.setText("");
                             mEnterWordsEditText.setVisibility(View.VISIBLE);
                             viewConfiguration = ViewConfiguration.PLAYING;
                         }
-
                     case PLAYING:
                         startTimer();
-                            viewConfiguration = ViewConfiguration.PAUSED;
-                            break;
+                        viewConfiguration = ViewConfiguration.PAUSED;
+                        break;
 
                     case PAUSED:
                         pauseTimer();
@@ -213,13 +246,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mTimeLeftInMillis = millisUntilFinished;
                         updateCountDownText();
                     }
+
                     @Override
                     public void onFinish() {
-                        if(viewConfiguration.equals(ViewConfiguration.PAUSED) && mTimerText.getText().equals("00:00")) {
+                        if (viewConfiguration.equals(ViewConfiguration.PAUSED) && mTimerText.getText().equals("00:00")) {
                             alertDialog.show();
                             resetTimer();
                             mStartButton.setText(R.string.start_button_message);
-                            mp.start();
+                            if (soundState == 1) {
+                                mediaPlayer.start();
+                            }
                         }
                     }
                 }.start();
@@ -488,6 +524,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.overflow_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.settings_item:
+    final AlertDialog.Builder ad = new AlertDialog.Builder(this)
+            .setTitle(R.string.sound_message)
+            .setNegativeButton(getString(R.string.sound_off), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    soundState = 0;
+                    if(soundState == 0) {
+                        mediaPlayer.release();
+                        getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).edit().putBoolean("mute_pressed", true).apply();
+                    } else if (soundState == 1) {
+                        mediaPlayer.start();
+                        getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).edit().putBoolean("mute_pressed", true).apply();
+
+                    }
+                    dialog.dismiss();
+                }
+            })
+            .setPositiveButton(getString(R.string.sound_on), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    soundState = 1;
+                    dialog.dismiss();
+                }
+            });
+             ad.show();
+        }
+
+        return false;
     }
 }
 

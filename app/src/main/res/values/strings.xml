@@ -5,7 +5,11 @@
     <string name="toast_msg_error_network">Network Error. Please try again.</string>
     <string name="toast_msg_error_wrong_letter">Letter or word not found</string>
     <string name="timer_complete_msg">Time is up</string>
-    <string name="okay_message">Ok</string>
+    <string name="play_again_message">Play Again</string>
+    <string name="quit_message">Quit</string>
     <string name="start_button_message">Start</string>
     <string name="pause_button_message">Pause</string>
+    <string name="sound_message">Sound</string>
+    <string name="sound_off">Off</string>
+    <string name="sound_on">On</string>
 </resources>
