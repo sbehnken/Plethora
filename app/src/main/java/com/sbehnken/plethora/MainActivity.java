@@ -31,6 +31,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -207,8 +209,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
-            //todo fix time
-            private static final long START_TIME_IN_MILLIS = 4000;
+            private static final long START_TIME_IN_MILLIS = 180000;
             private CountDownTimer mCountDownTimer;
             private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
 
@@ -216,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 switch (viewConfiguration) {
                     case INITIALIZED:
-                        if (mTimeLeftInMillis == 4000 || mTimerText.getText().equals("00:00")) {
+                        if (mTimeLeftInMillis == 180000 || mTimerText.getText().equals("00:00")) {
                             randomizeViews();
                             mAdapter.getUserEntryList().clear();
                             mTotalPoints.setText("");
@@ -473,7 +474,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             dictionaryService.getResponse(word).enqueue(new Callback<DictionaryResponse>() {
                 @Override
                 public void onResponse(Call<DictionaryResponse> call, Response<DictionaryResponse> response) {
-
                     if (response.body() != null) {
 
                         ArrayList<UserEntry> userEntryList = mAdapter.getUserEntryList();
@@ -482,19 +482,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         boolean isDouble = false;
 
                         for (int i = 0; i < userEntryList.size(); i++) {
-                            isDouble = userEntryList.get(i).getWord().equals(word);
-
+                            String wordEntered = userEntryList.get(i).getWord();
                             total = total + userEntryList.get(i).getPoints();
+                            if(wordEntered.equals(word)) {
+                                isDouble = true;
+                                break;
+                            }
                         }
                         if (isDouble) {
-
                             final Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_msg_error_duplicate),
                                     Toast.LENGTH_SHORT);
 
                             toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 200);
                             toast.show();
                         } else {
-
                             final UserEntry userEntry = new UserEntry(word, calculatePoints(word));
 
                             if (userEntryList.size() < 1) {

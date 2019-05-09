@@ -45,8 +45,6 @@ public class UserEntryItemAdapter extends RecyclerView.Adapter<UserItemViewHolde
         notifyDataSetChanged();
     }
 
-
-
     public ArrayList<UserEntry> getUserEntryList() {
         return userEntryList;
     }
