@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbehnken.plethora.model.DictionaryResponse;
+import com.sbehnken.plethora.model.LexicalEntry;
 import com.sbehnken.plethora.model.UserEntry;
 import com.squareup.picasso.Picasso;
 

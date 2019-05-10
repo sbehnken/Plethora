@@ -7,6 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import com.sbehnken.plethora.model.DictionaryResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sbehnken.plethora.model.LexicalEntry;
 
 public class DictionaryService {
     static private final String TAG = DictionaryService.class.getSimpleName();
@@ -21,14 +22,10 @@ public class DictionaryService {
                 .build();
 
         dictionaryInterface = retrofit.create(DictionaryInterface.class);
-
     }
 
     public Call<DictionaryResponse> getResponse(String word) {
         //todo replace with gradle properties variable
         return dictionaryInterface.getResponse("5e69ff0f", "ac255a2dfb4318041d9e4dbd5f7372c4", word);
     }
-
-
-
 }
