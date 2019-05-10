@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences.Editor mEditor;
 
     private MediaPlayer mediaPlayer;
+    private RecyclerView mFinishedWordsRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final Button mStartButton = findViewById(R.id.start_button);
         Button mEnterButton = findViewById(R.id.enter_button);
 
-        RecyclerView mFinishedWordsRecyclerView = findViewById(R.id.finished_words_list);
+        mFinishedWordsRecyclerView = findViewById(R.id.finished_words_list);
 
         mFirstletterTextView = findViewById(R.id.firstLetterTextView);
         mSecondletterTextView = findViewById(R.id.secondLetterTextView);
@@ -477,6 +478,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (response.body() != null) {
 
                         ArrayList<UserEntry> userEntryList = mAdapter.getUserEntryList();
+                        mFinishedWordsRecyclerView.scrollToPosition(userEntryList.size());
 
                         int total = 0;
                         boolean isDouble = false;
@@ -569,6 +571,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return false;
     }
+
 }
 
 

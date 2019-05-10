@@ -22,9 +22,7 @@ public class UserEntryItemAdapter extends RecyclerView.Adapter<UserItemViewHolde
     @NonNull
     @Override
     public UserItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-
         View view = LayoutInflater.from(context).inflate(R.layout.user_entry_item, viewGroup, false);
-
         UserItemViewHolder viewHolder = new UserItemViewHolder(view);
         return viewHolder;
     }
@@ -32,7 +30,6 @@ public class UserEntryItemAdapter extends RecyclerView.Adapter<UserItemViewHolde
     @Override
     public void onBindViewHolder(@NonNull UserItemViewHolder userItemViewHolder, int i) {
         userItemViewHolder.bindUserEntryItem(userEntryList.get(i).getWord(), userEntryList.get(i).getPoints().toString());
-
     }
 
     @Override
