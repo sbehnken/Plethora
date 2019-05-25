@@ -14,10 +14,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,15 +25,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbehnken.plethora.model.DictionaryResponse;
-import com.sbehnken.plethora.model.LexicalEntry;
 import com.sbehnken.plethora.model.UserEntry;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -44,7 +41,6 @@ import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
     private enum ViewConfiguration {
         INITIALIZED,
         PLAYING,
@@ -70,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mTimerText;
     private TextView mTotalPoints;
     private EditText mEnterWordsEditText;
+
+    private Button mBackButton;
 
     private UserEntryItemAdapter mAdapter;
 
@@ -101,8 +99,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final static String SHARED_PREFS = "shared_prefs";
 
     private int soundState = 0;
-    private SharedPreferences mSharedPreferences;
-    private SharedPreferences.Editor mEditor;
 
     private MediaPlayer mediaPlayer;
     private RecyclerView mFinishedWordsRecyclerView;
@@ -113,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         final Button mStartButton = findViewById(R.id.start_button);
-        Button mEnterButton = findViewById(R.id.enter_button);
+        final Button mEnterButton = findViewById(R.id.enter_button);
+        mBackButton = findViewById(R.id.back_button);
 
         mFinishedWordsRecyclerView = findViewById(R.id.finished_words_list);
 
@@ -145,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mediaPlayer = MediaPlayer.create(this, R.raw.endring);
 
-        mSharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        mEditor = mSharedPreferences.edit();
+        SharedPreferences mSharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.putInt(SHARED_PREFS, soundState);
         mEditor.apply();
 
@@ -154,6 +151,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (actionBar != null) {
             getSupportActionBar().setTitle("Plethora");
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // API 21
+            mEnterWordsEditText.setShowSoftInputOnFocus(false);
+        } else {
+            mEnterWordsEditText.setTextIsSelectable(true);
+        }
+
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String textString = mEnterWordsEditText.getText().toString();
+                if( mBackButton != null && textString.length() > 0) {
+                        mEnterWordsEditText.setText(textString.substring(0, textString.length() - 1));
+                        mEnterWordsEditText.setSelection(mEnterWordsEditText.getText().length());
+                }
+            }
+        });
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.timer_complete_msg)
@@ -173,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         layout.setVisibility(View.INVISIBLE);
                         mEnterWordsEditText.setVisibility(View.INVISIBLE);
                         viewConfiguration = ViewConfiguration.INITIALIZED;
+                        mEnterWordsEditText.setText("");
                         dialog.dismiss();
                     }
                 });
@@ -194,19 +209,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 wordAndPointCheck();
                 mEnterWordsEditText.setText("");
                 result = "";
-            }
-        });
-
-        mEnterWordsEditText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    switch (keyCode) {
-                        case KeyEvent.KEYCODE_ENTER:
-                            wordAndPointCheck();
-                    }
-                }
-                return false;
             }
         });
 
@@ -301,10 +303,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFourteenthLetterTextView.setOnClickListener(this);
         mFifteenthLetterTextView.setOnClickListener(this);
         mSixteenthLetterTextView.setOnClickListener(this);
+
+        hideSoftKeyboard();
     }
 
     @Override
     public void onClick(View v) {
+        if(mBackButton != null) {
+            result = mEnterWordsEditText.getText().toString();
+        }
         switch (v.getId()) {
             case R.id.firstLetterTextView:
                 result += mFirstletterTextView.getText().toString();
@@ -372,6 +379,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mEnterWordsEditText.setText(result);
                 break;
         }
+        mEnterWordsEditText.setSelection(mEnterWordsEditText.getText().length());
     }
 
     private int calculatePoints(String w) {
@@ -392,7 +400,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void randomizeViews() {
-
         //todo replace with a spread
         final List<Integer> numbers = new ArrayList<>();
         numbers.add(0);
@@ -460,10 +467,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 valid = false;
 
-                final Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_msg_error_wrong_letter),
+                final Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_msg_error_word_too_short),
                         Toast.LENGTH_SHORT);
 
-                toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 200);
+                toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 500);
                 toast.show();
                 mEnterWordsEditText.setText("");
                 break;
@@ -471,7 +478,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (valid) {
-
             final DictionaryService dictionaryService = new DictionaryService();
             dictionaryService.getResponse(word).enqueue(new Callback<DictionaryResponse>() {
                 @Override
@@ -496,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             final Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_msg_error_duplicate),
                                     Toast.LENGTH_SHORT);
 
-                            toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 200);
+                            toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 500);
                             toast.show();
                         } else {
                             final UserEntry userEntry = new UserEntry(word, calculatePoints(word));
@@ -514,7 +520,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         final Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.toast_msg_error_not_exist),
                                 Toast.LENGTH_SHORT);
 
-                        toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 200);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 500);
                         toast.show();
                         mEnterWordsEditText.setText("");
                     }
@@ -569,10 +575,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
              ad.show();
         }
-
         return false;
     }
 
+    private void hideSoftKeyboard() {
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
 }
 
 

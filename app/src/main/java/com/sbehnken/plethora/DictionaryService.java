@@ -25,7 +25,6 @@ public class DictionaryService {
     }
 
     public Call<DictionaryResponse> getResponse(String word) {
-        //todo replace with gradle properties variable
-        return dictionaryInterface.getResponse("5e69ff0f", "ac255a2dfb4318041d9e4dbd5f7372c4", word);
+        return dictionaryInterface.getResponse("5e69ff0f", BuildConfig.OXFORD_TOKEN, word);
     }
 }
